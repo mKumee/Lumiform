@@ -24,4 +24,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "Lumiform Project"
 include(":app")
- 
+
+include(":core:model")
+include(":core:common")
+include(":core:data")
+include(":core:network")
+include(":core:database")
+include(":core:uicomponents")
+include(":feature:maincontent")
