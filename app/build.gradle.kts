@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -61,8 +62,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:network"))
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.base)
+
+    implementation(libs.bundles.network)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.bundles.hilt)
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
