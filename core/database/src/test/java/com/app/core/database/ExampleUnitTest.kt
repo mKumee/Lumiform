@@ -1,4 +1,4 @@
-package com.app.core.databade
+package com.app.core.database
 
 import org.junit.Test
 

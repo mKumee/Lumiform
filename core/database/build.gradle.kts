@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.app.core.databade"
+    namespace = "com.app.core.database"
     compileSdk {
         version = release(37)
     }
@@ -21,9 +22,11 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.material)
+    implementation(libs.bundles.database)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.kotlinx.coroutines.core)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

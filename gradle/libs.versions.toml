@@ -113,6 +113,10 @@ hilt = [
     "hilt-android",
     "androidx-hilt-navigation-compose"
 ]
+database = [
+    "androidx-room-runtime",
+    "androidx-room-ktx"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

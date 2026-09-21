@@ -1,6 +1,9 @@
 package com.app.lumiform.di
 
 import android.content.Context
+import androidx.room.Room
+import com.app.core.database.LumiformDatabase
+import com.app.core.database.dao.ContentDao
 import com.app.network.ApiConfig
 import com.app.network.ApiService
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -71,5 +74,17 @@ object AppModule {
     @Singleton
     fun provideContentApiService(retrofit: Retrofit): ApiService =
         retrofit.create(ApiService::class.java)
+
+
+    //Database
+    @Provides
+    @Singleton
+    fun provideLumiformDatabase(@ApplicationContext context: Context): LumiformDatabase =
+        Room.databaseBuilder(context, LumiformDatabase::class.java, LumiformDatabase.DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @Provides
+    fun provideLumiformDao(database: LumiformDatabase): ContentDao = database.contentDao()
 
 }

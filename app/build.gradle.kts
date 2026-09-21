@@ -63,6 +63,7 @@ android {
 
 dependencies {
     implementation(project(":core:network"))
+    implementation(project(":core:database"))
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.base)
 

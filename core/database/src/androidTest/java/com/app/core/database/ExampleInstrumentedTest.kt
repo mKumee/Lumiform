@@ -1,4 +1,4 @@
-package com.app.core.databade
+package com.app.core.database
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
