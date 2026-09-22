@@ -64,6 +64,10 @@ android {
 dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:database"))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+    implementation(project(":core:data"))
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.base)
 

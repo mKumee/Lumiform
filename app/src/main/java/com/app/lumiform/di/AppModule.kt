@@ -2,6 +2,10 @@ package com.app.lumiform.di
 
 import android.content.Context
 import androidx.room.Room
+import com.app.core.common.dispatcher.AppDispatcher
+import com.app.core.common.dispatcher.Dispatcher
+import com.app.core.data.repository.ContentRepository
+import com.app.core.data.repository.OfflineFirstContentRepository
 import com.app.core.database.LumiformDatabase
 import com.app.core.database.dao.ContentDao
 import com.app.network.ApiConfig
@@ -13,6 +17,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
@@ -86,5 +91,14 @@ object AppModule {
 
     @Provides
     fun provideLumiformDao(database: LumiformDatabase): ContentDao = database.contentDao()
+
+    //Repository
+    @Provides
+    @Singleton
+    fun provideContentRepository(
+        api: ApiService,
+        dao: ContentDao,
+        @Dispatcher(AppDispatcher.DEFAULT) defaultDispatcher: CoroutineDispatcher
+    ): ContentRepository = OfflineFirstContentRepository(api, dao, defaultDispatcher)
 
 }
