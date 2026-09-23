@@ -6,7 +6,7 @@ import com.app.core.database.entity.PageEntity
 import com.app.core.database.entity.ResponseEntity
 import com.app.core.database.entity.ResponseSetEntity
 import com.app.core.model.ChoiceQuestion
-import com.app.core.model.ContentNode
+import com.app.core.model.ContentItems
 import com.app.core.model.ImageQuestion
 import com.app.core.model.Page
 import com.app.core.model.Response
@@ -29,7 +29,7 @@ fun buildDomainPages(
     val childrenOfPage: Map<Int, List<ItemEntity>> = items.filter { it.parentPageId != null }.groupBy { it.parentPageId!! }
     val childrenOfItem: Map<Int, List<ItemEntity>> = items.filter { it.parentItemId != null }.groupBy { it.parentItemId!! }
 
-    fun buildNode(entity: ItemEntity): ContentNode = when (entity.type) {
+    fun buildNode(entity: ItemEntity): ContentItems = when (entity.type) {
         ItemType.SECTION -> Section(
             id = entity.id,
             title = entity.title.orEmpty(),

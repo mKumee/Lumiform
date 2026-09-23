@@ -67,6 +67,12 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:data"))
+    implementation(project(":core:uicomponents"))
+    implementation(project(":feature:maincontent"))
+    implementation(project(":feature:imageDetail"))
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.androidx.core.splashscreen)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.base)

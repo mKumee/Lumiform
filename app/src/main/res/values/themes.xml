@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.LumiformProject" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.ContentViewer" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.ContentViewer.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.ContentViewer</item>
+    </style>
 </resources>

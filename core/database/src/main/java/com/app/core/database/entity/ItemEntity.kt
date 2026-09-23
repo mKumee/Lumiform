@@ -8,10 +8,10 @@ data class ItemEntity(
     @PrimaryKey val id: Int,
     val parentPageId: Int?,
     val parentItemId: Int?,
-    val type: String, // "section", "text", "image", "choice"
-    val title: String?,      // section, image
-    val content: String?,    // text, choice
-    val imageSrc: String?,   // image
+    val type: String,
+    val title: String?,
+    val content: String?,
+    val imageSrc: String?,
     val orderIndex: Int
 )
 

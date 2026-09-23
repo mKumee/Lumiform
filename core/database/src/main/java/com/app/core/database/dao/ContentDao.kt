@@ -26,9 +26,6 @@ interface ContentDao {
     @Query("SELECT * FROM responses ORDER BY orderIndex")
     fun observeResponses(): Flow<List<ResponseEntity>>
 
-    @Query("SELECT COUNT(*) FROM pages")
-    suspend fun pageCount(): Int
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPages(pages: List<PageEntity>)
 

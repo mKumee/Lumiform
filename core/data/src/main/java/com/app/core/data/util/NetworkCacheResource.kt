@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-inline fun <ResultType, RequestType> networkBoundResource(
+inline fun <ResultType, RequestType> fetchWithCache(
     crossinline query: () -> Flow<ResultType>,
     crossinline shouldFetch: (ResultType) -> Boolean = { true },
     crossinline fetch: suspend () -> RequestType,
@@ -25,7 +25,6 @@ inline fun <ResultType, RequestType> networkBoundResource(
         } catch (throwable: Throwable) {
             onFetchFailed(throwable)
             emit(DataResult.Error(throwable, throwable.message))
-            // Still surface whatever is cached so the screen isn't left empty on failure.
             if (hasUsableCache(cached)) {
                 emit(DataResult.Success(cached, isFromCache = true))
             }

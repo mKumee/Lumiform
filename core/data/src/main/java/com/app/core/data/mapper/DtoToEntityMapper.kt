@@ -18,7 +18,7 @@ fun List<ItemDto>.toContentEntities(): ContentEntities {
     fun flatten(children: List<ItemDto>, parentPageId: Int?, parentItemId: Int?) {
         children.forEachIndexed { index, child ->
             when (child.type) {
-                "page" -> error("A page cannot be nested inside another item (id=${child.id})")
+                "page" -> error("Page type, can not be added (id=${child.id})")
 
                 "section" -> {
                     items += ItemEntity(

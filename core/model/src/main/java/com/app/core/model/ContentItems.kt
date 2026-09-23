@@ -1,25 +1,22 @@
 package com.app.core.model
 
-sealed interface ContentNode {
+sealed interface ContentItems {
     val id: Int
 }
 
-/** Top-level element. A list of [Page] is the root of the whole document. */
 data class Page(
     override val id: Int,
     val title: String,
-    val items: List<ContentNode>
-) : ContentNode
+    val items: List<ContentItems>
+) : ContentItems
 
-/** Sections can nest arbitrarily deep and contain more sections or questions. */
 data class Section(
     override val id: Int,
     val title: String,
-    val items: List<ContentNode>
-) : ContentNode
+    val items: List<ContentItems>
+) : ContentItems
 
-/** Marker for the three question variants, so exhaustive `when` blocks stay tight. */
-sealed interface Question : ContentNode
+sealed interface Question : ContentItems
 
 data class TextQuestion(
     override val id: Int,
