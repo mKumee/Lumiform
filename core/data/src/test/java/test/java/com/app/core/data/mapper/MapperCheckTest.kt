@@ -7,13 +7,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.system.measureTimeMillis
 
-/**
- * Not a real benchmark (no warmup iterations, no JMH) - just a quick sanity check I added
- * after wondering how the flatten/rebuild mapping would hold up on a much bigger document
- * than the challenge's own sample json. Builds ~2000 leaf items and makes sure the whole
- * round trip still finishes fast enough that nobody would notice it on a real device.
- */
-class MapperSpeedCheckTest {
+
+class MapperCheckTest {
 
     @Test
     fun `mapping a large document stays fast`() {
