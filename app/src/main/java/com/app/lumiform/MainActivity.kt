@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
             val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
 
             LumiformTheme(themeMode = themeMode) {
-                AppNavHost(themeMode = themeMode, onToggleTheme = viewModel::toggleTheme, modifier = Modifier.fillMaxSize())
+                AppNavHost(themeMode = themeMode, onToggleTheme = { viewModel.switchTheme() }, modifier = Modifier.fillMaxSize())
             }
         }
     }

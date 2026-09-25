@@ -75,8 +75,8 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
 
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.androidx.base)
-
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.navigation)
     implementation(libs.bundles.network)
     implementation(libs.androidx.room.runtime)
     implementation(libs.bundles.hilt)
@@ -85,8 +85,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.junit)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    androidTestImplementation(libs.bundles.android.test)
+    debugImplementation(libs.bundles.unit.test)
 }
