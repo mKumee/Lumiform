@@ -11,17 +11,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.app.core.model.Response
+import com.app.core.model.ResponseSet
+import com.app.core.model.ThemeMode
 import com.app.uicomponents.components.CachedNetworkImage
 import com.app.uicomponents.components.ChoiceChip
 import com.app.uicomponents.components.SectionHeaderCard
 import com.app.uicomponents.theme.LumiformColors
+import com.app.uicomponents.theme.LumiformTheme
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -71,7 +78,7 @@ fun HomeContentRowItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             CachedNetworkImage(url = row.imageSrc.orEmpty(), contentDescription = row.title, thumbnailSize = true)
-            Text(text = row.title.orEmpty(), style = MaterialTheme.typography.titleMedium, color = colors.textPrimary)
+            Text(text = row.title.orEmpty(), style = MaterialTheme.typography.bodySmall, color = colors.textPrimary)
         }
 
         ContentRowType.CHOICE -> Column(
@@ -84,7 +91,7 @@ fun HomeContentRowItem(
                 .padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(text = row.content.orEmpty(), style = MaterialTheme.typography.titleMedium, color = colors.textPrimary)
+            Text(text = row.content.orEmpty(), style = MaterialTheme.typography.bodySmall, color = colors.textPrimary)
             val responseSet = row.responseSet
             if (responseSet != null) {
                 val selectedIds = selections[row.id].orEmpty()
@@ -102,6 +109,129 @@ fun HomeContentRowItem(
                     style = MaterialTheme.typography.labelSmall,
                     color = colors.textMuted
                 )
+            }
+        }
+    }
+}
+//preview mode
+@Preview(name = "Section - top level", showBackground = true)
+@Composable
+private fun SectionRowTopLevelPreview() {
+    PreviewSurface {
+        HomeContentRowItem(
+            row = ContentRow(id = 1, depth = 1, type = ContentRowType.SECTION, ancestorSectionIds = emptyList(), title = "Introduction", orderLabel = "01"),
+            selections = emptyMap(),
+            isSectionExpanded = true,
+            onSectionToggled = {},
+            onResponseToggled = { _, _, _ -> },
+            onImageClick = { _, _ -> }
+        )
+    }
+}
+
+@Preview(name = "Section - nested", showBackground = true)
+@Composable
+private fun SectionRowNestedPreview() {
+    PreviewSurface {
+        HomeContentRowItem(
+            row = ContentRow(id = 7, depth = 2, type = ContentRowType.SECTION, ancestorSectionIds = listOf(5), title = "Subsection 1.1"),
+            selections = emptyMap(),
+            isSectionExpanded = true,
+            onSectionToggled = {},
+            onResponseToggled = { _, _, _ -> },
+            onImageClick = { _, _ -> }
+        )
+    }
+}
+
+@Preview(name = "Text question", showBackground = true)
+@Composable
+private fun TextRowPreview() {
+    PreviewSurface {
+        HomeContentRowItem(
+            row = ContentRow(id = 8, depth = 3, type = ContentRowType.TEXT, ancestorSectionIds = listOf(5, 7), content = "This is a subsection under Chapter 1."),
+            selections = emptyMap(),
+            isSectionExpanded = true,
+            onSectionToggled = {},
+            onResponseToggled = { _, _, _ -> },
+            onImageClick = { _, _ -> }
+        )
+    }
+}
+
+@Preview(name = "Image question", showBackground = true)
+@Composable
+private fun ImageRowPreview() {
+    PreviewSurface {
+        HomeContentRowItem(
+            row = ContentRow(id = 9, depth = 2, type = ContentRowType.IMAGE, ancestorSectionIds = listOf(5), title = "Chapter 1 Image", imageSrc = "https://example.com/chapter1.png"),
+            selections = emptyMap(),
+            isSectionExpanded = true,
+            onSectionToggled = {},
+            onResponseToggled = { _, _, _ -> },
+            onImageClick = { _, _ -> }
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun ChoiceRowSingleSelectPreview() {
+    PreviewSurface {
+        HomeContentRowItem(
+            row = ContentRow(
+                id = 13, depth = 2, type = ContentRowType.CHOICE, ancestorSectionIds = listOf(11),
+                content = "What is the main topic of Chapter 2?",
+                responseSet = ResponseSet(
+                    id = 101, multipleSelection = false,
+                    responses = listOf(
+                        Response(id = 1011, label = "Label 1", score = 1),
+                        Response(id = 1012, label = "Label2", score = 2),
+                        Response(id = 1013, label = "Label 3", score = null)
+                    )
+                )
+            ),
+            selections = mapOf(13 to setOf(1011)),
+            isSectionExpanded = true,
+            onSectionToggled = {},
+            onResponseToggled = { _, _, _ -> },
+            onImageClick = { _, _ -> }
+        )
+    }
+}
+
+@Preview(name = "Choice question - multi select", showBackground = true)
+@Composable
+private fun ChoiceRowMultiSelectPreview() {
+    PreviewSurface {
+        HomeContentRowItem(
+            row = ContentRow(
+                id = 14, depth = 2, type = ContentRowType.CHOICE, ancestorSectionIds = listOf(11),
+                content = "Which areas were inspected?",
+                responseSet = ResponseSet(
+                    id = 102, multipleSelection = true,
+                    responses = listOf(
+                        Response(id = 1021, label = "Label 1", score = null),
+                        Response(id = 1022, label = "Label 2", score = null),
+                        Response(id = 1023, label = "Label 3", score = null)
+                    )
+                )
+            ),
+            selections = mapOf(14 to setOf(1021, 1023)),
+            isSectionExpanded = true,
+            onSectionToggled = {},
+            onResponseToggled = { _, _, _ -> },
+            onImageClick = { _, _ -> }
+        )
+    }
+}
+
+@Composable
+private fun PreviewSurface(content: @Composable () -> Unit) {
+    LumiformTheme(ThemeMode.LIGHT) {
+        Surface(color = LumiformColors.current.background) {
+            Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+                content()
             }
         }
     }

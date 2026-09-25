@@ -17,6 +17,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -24,8 +25,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-
 class ContentRepositoryImplTest {
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = UnconfinedTestDispatcher()
 
     private val api = mockk<ApiService>()
     private val dao = mockk<ContentDao>()
@@ -43,11 +46,11 @@ class ContentRepositoryImplTest {
         every { dao.observeItems() } returns items
         every { dao.observeResponseSets() } returns responseSets
         every { dao.observeResponses() } returns responses
-        repository = ContentRepositoryImpl(api, dao, UnconfinedTestDispatcher())
+        repository = ContentRepositoryImpl(api, dao, testDispatcher)
     }
 
     @Test
-    fun `success path - Loading then a fresh Success`() = runTest {
+    fun `success path - Loading then a fresh Success`() = runTest(testDispatcher) {
         coEvery { api.getResponseApi() } returns listOf(
             ItemDto(id = 1, type = "page", title = "Main Page", items = listOf(ItemDto(id = 2, type = "text", content = "hello")))
         )
@@ -67,7 +70,7 @@ class ContentRepositoryImplTest {
     }
 
     @Test
-    fun `failure with an existing cache - falls back to it, tagged as isFromCache`() = runTest {
+    fun `failure with an existing cache - falls back to it, tagged as isFromCache`() = runTest(testDispatcher) {
         pages.value = listOf(PageEntity(1, "Cached Page", 0))
         items.value = listOf(ItemEntity(2, parentPageId = 1, parentItemId = null, type = ItemType.TEXT, title = null, content = "cached", imageSrc = null, orderIndex = 0))
         coEvery { api.getResponseApi() } throws java.io.IOException("no connection")
@@ -85,14 +88,14 @@ class ContentRepositoryImplTest {
     }
 
     @Test
-    fun `failure with nothing cached yet - just the error, no empty Success afterwards`() = runTest {
+    fun `failure with nothing cached yet - just the error, no empty Success afterwards`() = runTest(testDispatcher) {
         coEvery { api.getResponseApi() } throws java.io.IOException("no connection")
 
         repository.observeContent().test {
             assertEquals(DataResult.Loading, awaitItem())
             val error = awaitItem() as DataResult.Error
             assertTrue(error.exception is java.io.IOException)
-            expectNoEvents()
+            awaitComplete()
         }
     }
 }
