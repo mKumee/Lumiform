@@ -49,6 +49,8 @@ Feature module will be separate and will be use for every part/screen/feature se
 - feature:imageDetail - full screen image
 
 ## Notes
+You can check the commit history for how this was built step by step.
+
 Hilt is only added on app and feature:maincontent, the other modules don't need it since
 nothing there gets injected.
 
@@ -63,6 +65,7 @@ For the choice questions, I made one usecase (ToggleResponseSelectionUseCase) si
 the only part with actual logic to test (single vs multiple selection). I had two more
 usecases before but they were just calling the repository directly with no logic, so I
 removed them and the viewmodel calls the repository directly now.
+
 
 ## What's not here yet
 things i'd add if this was going further than a challenge:
